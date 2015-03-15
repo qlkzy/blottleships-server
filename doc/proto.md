@@ -29,6 +29,7 @@ whereas `<` represents communications from Player to
 Manager. Sequences of three vertical dots (`.`) indicate where a long
 sequence of uninteresting communication has been elided.
 
+    > hello
     < ready 'PLAYER-VERSION-1.0'
     > who
     < iam 'A Blottleships Player'
@@ -82,34 +83,43 @@ General Notes
 Structure
 =========
 
-With the sole execeptions of the opening `ready` message from the player,
-and `error` messages from the manager, (of which more anon), all exchanges
-involve the manager sending a single message to the
-player, and the player responding with a single message.
+With the sole exception of the `error` message, exchanges involve the
+manager sending a single message to the player, and the player
+responding with a single message.
 
 Special Messages
 ================
 
-### `ready`
+### `hello`
+
+**Manager:**
+
+`hello`
 
 **Player:**
 
 `ready <version>`
 
-All Players MUST send this message as their first interaction with the
-server.
+The Manager MUST begin all interactions with the Player by sending the
+message `hello`.
+
+The Player MUST respond with the `ready` message, specifiying their
+desired protocol version.
 
 `<version>` is an arbitrary string specifying the protocol version the
 client would like to use. If the server does not support this version,
 an error results.
 
 The version string corresponding to this document at its current state
-is "RENDERER-VERSION-1.0".
+is "PLAYER-VERSION-1.0".
 
 If a future version of this protocol requires more sophisticated
 version negotiation, it is suggested that the version string
 "MAKE-ME-AN-OFFER" be used to specify protocols supporting version
 negotiation (for the purposes of this message).
+
+The Manager MUST NOT send the `hello` message after the first
+interaction with the Player.
 
 It is an error for the version string to be empty.
 
