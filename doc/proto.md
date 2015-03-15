@@ -24,10 +24,10 @@ interpreted as described in [RFC 6919].
 Example
 =======
 
-In this example, `>` represents communications from Manager to Player,
-whereas `<` represents communications from Player to
-Manager. Sequences of three vertical dots (`.`) indicate where a long
-sequence of uninteresting communication has been elided.
+In this example, `>` represents communication from Manager to Player,
+whereas `<` represents communication from Player to Manager. Sequences
+of three vertical dots (`.`) indicate where a long sequence of
+uninteresting communication has been elided.
 
     > hello
     < ready 'PLAYER-VERSION-1.0'
@@ -74,18 +74,40 @@ General Notes
 =============
 
 - All protocol communication is line-oriented plain text.
+- Only 7-bit ASCII is permitted.
 - There is a one-to-one correspondence between messages and lines.
 - Blank lines are not permitted.
-- (Almost) all communication is Manager-driven: the Manager sends
-  one message, and the Player 
+- All communication is Manager-driven: the Manager sends one message,
+  and the Player responds with one message.
 
+General Syntax of Messages
+==========================
 
-Structure
-=========
+Intuitively, messages look a lot like the command lines for a typical
+Unix shell, such as bash.
 
-With the sole exception of the `error` message, exchanges involve the
-manager sending a single message to the player, and the player
-responding with a single message.
+A message is a sequence of tokens. Each token may consist of either:
+
+- A bare word: sequence of non-whitespace, non-quote (neither single
+  nor double), non-backspace characters.
+- A quoted string: any characters, enclosed in a pair of `'` (single
+  quote) characters. Any `'` (single quote) or `\` (backslash)
+  characters appearing in the quoted string must be escaped by an
+  immediately preceding `\` (backslash) character.
+
+All tokens are considered as strings. Quoted strings are not treated
+specially: they are just their contents. Any valid bare word can
+appear surrounded by quotation marks without changing its meaning, and
+any quoted string whose contents is a valid bare word can lose its
+quotation marks without changing its meaning. This is the same
+behaviour as in typical Unix command shells, and should not be
+particularly surprising.
+
+Tokens may be separated, preceded, and followed, by arbitrary
+whitespace, consisting of the space, tab, form-feed, vertical-tab, and
+carriage-return characters.
+
+Messages must be terminated by exactly one newline character.
 
 Special Messages
 ================
