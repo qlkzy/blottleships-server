@@ -29,7 +29,7 @@ whereas `<` represents communications from Player to
 Manager. Sequences of three vertical dots (`.`) indicate where a long
 sequence of uninteresting communication has been elided.
 
-    < ready "VERSION-1.0"
+    < ready 'PLAYER-VERSION-1.0'
     > who
     < iam 'A Blottleships Player'
     > describe
@@ -104,7 +104,7 @@ client would like to use. If the server does not support this version,
 an error results.
 
 The version string corresponding to this document at its current state
-is "VERSION-1.0".
+is "RENDERER-VERSION-1.0".
 
 If a future version of this protocol requires more sophisticated
 version negotiation, it is suggested that the version string
@@ -399,9 +399,58 @@ It is an error for the specified coordinates to be outside the board.
 Ship Shapes
 ===========
 
+The 'canonical' orientation of each ship is shown by the template
+below. `X` indicates a square the ship occupies, `-` indicates a
+square within the bounding box of the ship which it does not occupy.
+
+    ship[carrier]       -X-
+    ship[carrier]       -X-
+    ship[carrier]       -X-
+    ship[carrier]       XXX
+
+    ship[hovercraft]    -X-
+    ship[hovercraft]    XXX
+    ship[hovercraft]    X-X
+
+    ship[battleship]    X
+    ship[battleship]    X
+    ship[battleship]    X
+    ship[battleship]    X
+
+    ship[cruiser]       X
+    ship[cruiser]       X
+    ship[cruiser]       X
+
+    ship[destroyer]     X
+    ship[destroyer]     X
+
+The slightly odd presentation is intended to make it trivial to
+mechanically extract the ship shapes from this document.
 
 Board Shape
 ===========
+
+The shape of the board is shown by the template below. `X` represents
+a valid square within the board; `-` represents a square within the
+bounding box of the board on which it is not valid to place a ship
+(and which is not a valid board coordinate). The coordinate system
+goes southeast from the top-left; the coordinates of the corners are
+shown as `(x, y)` pairs.
+
+    (0, 0)                (11, 0)
+       X X X X X X - - - - - -
+       X X X X X X - - - - - -
+       X X X X X X - - - - - -
+       X X X X X X - - - - - -
+       X X X X X X - - - - - -
+       X X X X X X - - - - - -
+       X X X X X X X X X X X X
+       X X X X X X X X X X X X
+       X X X X X X X X X X X X
+       X X X X X X X X X X X X
+       X X X X X X X X X X X X
+       X X X X X X X X X X X X
+    (0, 11)               (11, 11)
 
 
 Message Grammar
